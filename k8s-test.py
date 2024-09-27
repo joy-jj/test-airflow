@@ -32,32 +32,32 @@ from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperato
 from airflow.providers.cncf.kubernetes.secret import Secret
 
 # [START howto_operator_k8s_cluster_resources]
-[docs]secret_file = Secret("volume", "/etc/sql_conn", "airflow-secrets", "sql_alchemy_conn")
-[docs]secret_env = Secret("env", "SQL_CONN", "airflow-secrets", "sql_alchemy_conn")
-[docs]secret_all_keys = Secret("env", None, "airflow-secrets-2")
-[docs]volume_mount = k8s.V1VolumeMount(
+secret_file = Secret("volume", "/etc/sql_conn", "airflow-secrets", "sql_alchemy_conn")
+secret_env = Secret("env", "SQL_CONN", "airflow-secrets", "sql_alchemy_conn")
+secret_all_keys = Secret("env", None, "airflow-secrets-2")
+volume_mount = k8s.V1VolumeMount(
     name="test-volume", mount_path="/root/mount_file", sub_path=None, read_only=True
 )
 
-[docs]configmaps = [
+configmaps = [
     k8s.V1EnvFromSource(config_map_ref=k8s.V1ConfigMapEnvSource(name="test-configmap-1")),
     k8s.V1EnvFromSource(config_map_ref=k8s.V1ConfigMapEnvSource(name="test-configmap-2")),
 ]
 
-[docs]volume = k8s.V1Volume(
+volume = k8s.V1Volume(
     name="test-volume",
     persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name="test-volume"),
 )
 
-[docs]port = k8s.V1ContainerPort(name="http", container_port=80)
+port = k8s.V1ContainerPort(name="http", container_port=80)
 
-[docs]init_container_volume_mounts = [
+init_container_volume_mounts = [
     k8s.V1VolumeMount(mount_path="/etc/foo", name="test-volume", sub_path=None, read_only=True)
 ]
 
-[docs]init_environments = [k8s.V1EnvVar(name="key1", value="value1"), k8s.V1EnvVar(name="key2", value="value2")]
+init_environments = [k8s.V1EnvVar(name="key1", value="value1"), k8s.V1EnvVar(name="key2", value="value2")]
 
-[docs]init_container = k8s.V1Container(
+init_container = k8s.V1Container(
     name="init-container",
     image="ubuntu:16.04",
     env=init_environments,
@@ -66,7 +66,7 @@ from airflow.providers.cncf.kubernetes.secret import Secret
     args=["echo 10"],
 )
 
-[docs]affinity = k8s.V1Affinity(
+affinity = k8s.V1Affinity(
     node_affinity=k8s.V1NodeAffinity(
         preferred_during_scheduling_ignored_during_execution=[
             k8s.V1PreferredSchedulingTerm(
@@ -96,12 +96,12 @@ from airflow.providers.cncf.kubernetes.secret import Secret
     ),
 )
 
-[docs]tolerations = [k8s.V1Toleration(key="key", operator="Equal", value="value")]
+tolerations = [k8s.V1Toleration(key="key", operator="Equal", value="value")]
 
 # [END howto_operator_k8s_cluster_resources]
 
-[docs]ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
-[docs]DAG_ID = "example_kubernetes_operator"
+ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
+DAG_ID = "example_kubernetes_operator"
 
 with DAG(
     dag_id="example_kubernetes_operator",
@@ -109,7 +109,7 @@ with DAG(
     start_date=datetime(2021, 1, 1),
     tags=["example"],
 ) as dag:
-[docs]    k = KubernetesPodOperator(
+    k = KubernetesPodOperator(
         namespace="default",
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
@@ -176,4 +176,4 @@ with DAG(
 from tests.system.utils import get_test_run  # noqa: E402
 
 # Needed to run the example DAG with pytest (see: tests/system/README.md#run_via_pytest)
-[docs]test_run = get_test_run(dag)
+test_run = get_test_run(dag)
