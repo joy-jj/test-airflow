@@ -116,7 +116,7 @@ with DAG(
         name="airflow-test-pod",
         task_id="task",
         affinity=affinity,
-        on_finish_action="delete_pod",
+        on_finish_action="keep_pod",
         hostnetwork=False,
         tolerations=tolerations,
         init_containers=[init_container],
