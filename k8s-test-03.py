@@ -49,7 +49,7 @@ init_container = k8s.V1Container(
     name="init-container",
     image="ubuntu:16.04",
     env=init_environments,
-    volume_mounts=init_container_volume_mounts,
+    # volume_mounts=init_container_volume_mounts,
     command=["bash", "-cx"],
     args=["echo 10"],
 )
@@ -108,11 +108,14 @@ with DAG(
         cmds=["bash", "-cx"],
         arguments=["echo", "10"],
         labels={"foo": "bar"},
-        secrets=[secret_file, secret_env, secret_all_keys],
+        #
+        # secrets=[secret_file, secret_env, secret_all_keys],
         ports=[port],
-        volumes=[volume],
-        volume_mounts=[volume_mount],
-        env_from=configmaps,
+        #
+        # volumes=[volume],
+        # volume_mounts=[volume_mount],
+        # env_from=configmaps,
+        
         name="airflow-test-pod",
         task_id="task",
         affinity=affinity,
