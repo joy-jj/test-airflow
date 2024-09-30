@@ -42,4 +42,4 @@ if k8s:
         def start_task():
             print_stuff()
     
-    start_task=()
+    start_task=start_task()
