@@ -16,8 +16,8 @@ k8s_exec_config_resource_requirements = {
                 k8s.V1Container(
                     name="base",
                     resources=k8s.V1ResourceRequirements(
-                        requests={"cpu": 0.5, "memory": "1024Mi", "ephemeral-storage": "1Gi"},
-                        limits={"cpu": 0.5, "memory": "1024Mi", "ephemeral-storage": "1Gi"}
+                        requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
+                        limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"}
                     )
                 )
             ]
