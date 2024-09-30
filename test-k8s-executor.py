@@ -1,45 +1,45 @@
-from __future__ import annotations
-
-import logging
-import os
-
 import pendulum
+import time
 
-from airflow.configuration import conf
-from airflow.decorators import task
-from airflow.example_dags.libs.helper import print_stuff
 from airflow.models.dag import DAG
+from airflow.decorators import task
+from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+from airflow.example_dags.libs.helper import print_stuff
+from kubernetes.client import models as k8s
 
-log = logging.getLogger(__name__)
 
-
-try:
-    from kubernetes.client import models as k8s
-except ImportError:
-    log.warning(
-        "The example_kubernetes_executor example DAG requires the kubernetes provider."
-        " Please install it with: pip install apache-airflow[cncf.kubernetes]"
+k8s_exec_config_resource_requirements = {
+    "pod_override": k8s.V1Pod(
+        spec=k8s.V1PodSpec(
+            containers=[
+                k8s.V1Container(
+                    name="base",
+                    resources=k8s.V1ResourceRequirements(
+                        requests={"cpu": 0.5, "memory": "1024Mi", "ephemeral-storage": "1Gi"},
+                        limits={"cpu": 0.5, "memory": "1024Mi", "ephemeral-storage": "1Gi"}
+                    )
+                )
+            ]
+        )
     )
-    k8s = None
+}
 
+with DAG(
+    dag_id="example_kubernetes_executor_pod_override_sources",
+    schedule=None,
+    start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
+    catchup=False
+):
+    BashOperator(
+      task_id="bash_resource_requirements_override_example",
+      bash_command="echo hi",
+      executor_config=k8s_exec_config_resource_requirements
+    )
 
+    @task(executor_config=k8s_exec_config_resource_requirements)
+    def resource_requirements_override_example():
+        print_stuff()
+        time.sleep(60)
 
-if k8s:
-    with DAG(
-        dag_id="my_example_kubernetes_executor",
-        schedule=None,
-        start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
-        catchup=False,
-        tags=["k8s-executor-example"],
-    ) as dag:
-        # You can use annotations on your kubernetes pods!
-        start_task_executor_config = {
-            "pod_override": k8s.V1Pod(metadata=k8s.V1ObjectMeta(annotations={"test": "annotation"}))
-        }
-
-
-        @task(executor_config=start_task_executor_config)
-        def start_task():
-            print_stuff()
-    
-    start_task=start_task()
+    resource_requirements_override_example()
