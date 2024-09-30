@@ -33,7 +33,7 @@ with DAG(
 ):
     BashOperator(
       task_id="bash_resource_requirements_override_example",
-      bash_command="echo hi",
+      bash_command="while true; do echo hi; sleep 5; done",
       executor_config=k8s_exec_config_resource_requirements
     )
 
