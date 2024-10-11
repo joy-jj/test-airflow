@@ -19,28 +19,26 @@ k8s_exec_config_resource_requirements = {
                     volume_mounts=[
                         k8s.V1VolumeMount(name="ephemeral-volume", mount_path="/home/jovyan")
                     ],
-                    volumes=[
-                        k8s.V1Volume(
-                            name="ephemeral-volume",
-                            ephemeral=k8s.V1EphemeralVolumeSource(
-                                volume_claim_template=k8s.V1PersistentVolumeClaimTemplate(
-                                    spec=k8s.V1PersistentVolumeClaimSpec(
-                                        access_modes=["ReadWriteOnce"],
-                                        storage_class_name="csi-disk",
-                                        resources=k8s.V1ResourceRequirements(
-                                            requests={"storage": "10Gi"}
-                                        ),
-                                    )
-                                )
-                            ),
-                        )
-                    ],
                     resources=k8s.V1ResourceRequirements(
                         requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
                         limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
                     ),
                 )
-            ]
+            ],
+            volumes=[
+                k8s.V1Volume(
+                    name="ephemeral-volume",
+                    ephemeral=k8s.V1EphemeralVolumeSource(
+                        volume_claim_template=k8s.V1PersistentVolumeClaimTemplate(
+                            spec=k8s.V1PersistentVolumeClaimSpec(
+                                access_modes=["ReadWriteOnce"],
+                                storage_class_name="csi-disk",
+                                resources=k8s.V1ResourceRequirements(requests={"storage": "10Gi"}),
+                            )
+                        )
+                    ),
+                )
+            ],
         )
     )
 }
