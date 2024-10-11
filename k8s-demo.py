@@ -35,5 +35,6 @@ with DAG(
     def resource_requirements_override_example():
         print_stuff()
         print("Hello, World!")
+        time.sleep(3600)
   
     resource_requirements_override_example()
