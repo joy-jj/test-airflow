@@ -15,6 +15,7 @@ k8s_exec_config_resource_requirements = {
                 k8s.V1Container(
                     name="base",
                     image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.4",
+                    command=["/bin/bash"],
                     resources=k8s.V1ResourceRequirements(
                         requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
                         limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"}
