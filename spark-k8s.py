@@ -25,7 +25,7 @@ k8s_exec_config_resource_requirements = {
 }
 
 with DAG(
-    dag_id="example_kubernetes_executor_pod_override_sources",
+    dag_id="spark-k8s",
     schedule=None,
     start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
     catchup=False
