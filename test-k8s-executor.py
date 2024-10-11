@@ -39,7 +39,6 @@ with DAG(
 
     @task(executor_config=k8s_exec_config_resource_requirements)
     def resource_requirements_override_example():
-        # print_stuff()
-        time.sleep(60)
+        print_stuff()
 
     resource_requirements_override_example()
