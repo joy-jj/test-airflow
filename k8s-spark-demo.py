@@ -16,6 +16,28 @@ k8s_exec_config_resource_requirements = {
                     name="base",
                     image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.4",
                     command=["/bin/bash", "-c"],
+                    volumeMounts=[
+                        {
+                            "name": "ephemeral-volume",
+                            "mountPath": "/home/jovyan",
+                        }
+                    ],
+                    volume = [
+                        "name": "ephemeral-volume",
+                        "ephemeral": {
+                            "volumeClaimTemplate": {
+                                "spec": {
+                                    "accessModes": ["ReadWriteOnce"],
+                                    "storageClassName": "csi-disk",
+                                    "resources": {
+                                        "requests": {
+                                            "storage": "10Gi"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
                     resources=k8s.V1ResourceRequirements(
                         requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
                         limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"}
