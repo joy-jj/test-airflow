@@ -16,43 +16,41 @@ k8s_exec_config_resource_requirements = {
                     name="base",
                     image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.4",
                     command=["/bin/bash", "-c"],
-                    volumeMounts=[
-                        {
-                            "name": "ephemeral-volume",
-                            "mountPath": "/home/jovyan",
-                        }
+                    volume_mounts=[
+                        k8s.V1VolumeMount(name="ephemeral-volume", mount_path="/home/jovyan")
                     ],
-                    volume = [
-                        "name": "ephemeral-volume",
-                        "ephemeral": {
-                            "volumeClaimTemplate": {
-                                "spec": {
-                                    "accessModes": ["ReadWriteOnce"],
-                                    "storageClassName": "csi-disk",
-                                    "resources": {
-                                        "requests": {
-                                            "storage": "10Gi"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    volumes=[
+                        k8s.V1Volume(
+                            name="ephemeral-volume",
+                            ephemeral=k8s.V1EphemeralVolumeSource(
+                                volume_claim_template=k8s.V1PersistentVolumeClaimTemplate(
+                                    spec=k8s.V1PersistentVolumeClaimSpec(
+                                        access_modes=["ReadWriteOnce"],
+                                        storage_class_name="csi-disk",
+                                        resources=k8s.V1ResourceRequirements(
+                                            requests={"storage": "10Gi"}
+                                        ),
+                                    )
+                                )
+                            ),
+                        )
+                    ],
                     resources=k8s.V1ResourceRequirements(
                         requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
-                        limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"}
-                    )
+                        limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
+                    ),
                 )
             ]
         )
     )
 }
 
+
 with DAG(
     dag_id="k8s-spark-demo",
     schedule=None,
     start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
-    catchup=False
+    catchup=False,
 ):
 
     @task(executor_config=k8s_exec_config_resource_requirements)
@@ -65,8 +63,5 @@ with DAG(
         #         .appName("data loading for feast") \
         #         .config("spark.executor.instances", "1") \
         #         .config("spark.executor.memory", "1g") \
-        #         .config("spark.sql.legacy.parquet.nanosAsLong", "true") \
-        #         .getOrCreate()
-        # spark.sql('show tables').show()
 
     spark_example()
