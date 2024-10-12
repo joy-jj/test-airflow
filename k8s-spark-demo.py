@@ -23,6 +23,7 @@ k8s_exec_config_resource_requirements = {
                         requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
                         limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
                     ),
+                    
                 )
             ],
             volumes=[
@@ -54,6 +55,7 @@ with DAG(
     @task(executor_config=k8s_exec_config_resource_requirements)
     def spark_example():
         print("Hello, World!")
+        time.sleep(3600)
         # from pyspark.sql import SparkSession
         # spark = SparkSession \
         #         .builder \
