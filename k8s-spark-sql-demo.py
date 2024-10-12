@@ -54,16 +54,14 @@ with DAG(
 
     @task(executor_config=k8s_exec_config_resource_requirements)
     def spark_example():
-        from pyspark.sql import SparkSession
-        spark = SparkSession \
-                .builder \
-                .master('local[1]') \
-                .appName("data loading for feast") \
-                .config("spark.executor.instances", "1") \
-                .config("spark.executor.memory", "1g") 
-                
-        sc = spark.sparkContext
-        nums = sc.parallelize([1,2,3,4])
-        print(nums.map(lambda x: x*x).collect())
+        print("Hello, World!")
+        time.sleep(3600)
+        # from pyspark.sql import SparkSession
+        # spark = SparkSession \
+        #         .builder \
+        #         .master('local[1]') \
+        #         .appName("data loading for feast") \
+        #         .config("spark.executor.instances", "1") \
+        #         .config("spark.executor.memory", "1g") 
 
     spark_example()
