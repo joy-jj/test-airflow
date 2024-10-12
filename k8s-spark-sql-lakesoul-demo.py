@@ -14,7 +14,6 @@ k8s_exec_config_resource_requirements = {
             containers=[
                 k8s.V1Container(
                     name="base",
-                    labels={"access-lakeinsight": "true"},
                     image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.5-airflow-v4",
                     command=["/bin/bash", "/opt/run-airflow.sh"],
                     volume_mounts=[
