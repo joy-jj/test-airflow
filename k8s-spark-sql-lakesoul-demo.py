@@ -10,10 +10,12 @@ from kubernetes.client import models as k8s
 
 k8s_exec_config_resource_requirements = {
     "pod_override": k8s.V1Pod(
+        metadata=k8s.V1ObjectMeta(labels={"access-lakesoul": "true"}),
         spec=k8s.V1PodSpec(
             containers=[
                 k8s.V1Container(
                     name="base",
+                    labels={"access-lakesoul": "true"},
                     image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.5-airflow-v4",
                     command=["/bin/bash", "/opt/run-airflow.sh"],
                     volume_mounts=[
