@@ -55,11 +55,7 @@ with DAG(
     @task(executor_config=k8s_exec_config_resource_requirements)
     def spark_example():
         from pyspark.sql import SparkSession
-        spark = SparkSession \
-                .builder \
-                .master('local[1]') \
-                .appName("spark-k8s-demo")
-                
+        spark = SparkSession.builder.appName("HelloWorld").getOrCreate()
         sc = spark.sparkContext
         nums = sc.parallelize([1,2,3,4])
         print(nums.map(lambda x: x*x).collect())
