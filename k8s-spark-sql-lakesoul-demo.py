@@ -10,9 +10,10 @@ from kubernetes.client import models as k8s
 
 k8s_exec_config_resource_requirements = {
     "pod_override": k8s.V1Pod(
-        # metadata=k8s.V1ObjectMeta(labels={"access-lakesoul": "true"}),
-        metadata=k8s.V1ObjectMeta(labels={"access-lakeinsight": "true"},namespace="lake-public"),
+        metadata=k8s.V1ObjectMeta(labels={"access-lakesoul": "true"}),
+        # metadata=k8s.V1ObjectMeta(labels={"access-lakeinsight": "true"}, namespace="lake-public"),
         spec=k8s.V1PodSpec(
+            # service_account_name="lake-public",
             containers=[
                 k8s.V1Container(
                     name="base",
@@ -25,7 +26,6 @@ k8s_exec_config_resource_requirements = {
                         requests={"cpu": 1, "memory": "1Gi", "ephemeral-storage": "1Gi"},
                         limits={"cpu": 1, "memory": "1Gi", "ephemeral-storage": "1Gi"},
                     ),
-                    
                 )
             ],
             volumes=[
@@ -42,7 +42,7 @@ k8s_exec_config_resource_requirements = {
                     ),
                 )
             ],
-        )
+        ),
     )
 }
 
@@ -57,14 +57,16 @@ with DAG(
     @task(executor_config=k8s_exec_config_resource_requirements)
     def sparksql_example():
         from pyspark.sql import SparkSession
-        spark = SparkSession \
-                .builder \
-                .master('local[1]') \
-                .appName("data loading for feast") \
-                .config("spark.executor.instances", "1") \
-                .config("spark.executor.memory", "1g") \
-                .config("spark.kubernetes.namespace","lake-public") \
-                .getOrCreate()
+
+        spark = (
+            SparkSession.builder.master("local[1]")
+            .appName("data loading for feast")
+            .config("spark.executor.instances", "1")
+            .config("spark.executor.memory", "1g")
+            .config("spark.kubernetes.namespace", "lake-public")
+            .getOrCreate()
+        )
         spark.sql("show tables").show()
         spark.sql("select * from driver_hourly_stats2 limit 3").show()
+
     sparksql_example()
