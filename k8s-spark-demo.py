@@ -14,7 +14,7 @@ k8s_exec_config_resource_requirements = {
             containers=[
                 k8s.V1Container(
                     name="base",
-                    image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.5-airflow-v2",
+                    image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.5-airflow-v3",
                     command=["/bin/bash", "/opt/run-airflow.sh"],
                     volume_mounts=[
                         k8s.V1VolumeMount(name="ephemeral-volume", mount_path="/home/jovyan")
