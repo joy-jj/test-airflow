@@ -47,7 +47,7 @@ k8s_exec_config_resource_requirements = {
 
 
 with DAG(
-    dag_id="k8s-spark-sql-read-demo",
+    dag_id="k8s-spark-sql-lakesoul-demo",
     schedule=None,
     start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
     catchup=False,
@@ -65,4 +65,5 @@ with DAG(
                 .config("spark.kubernetes.namespace","lake-public") \
                 .getOrCreate()
         spark.sql("show tables").show()
+        spark.sql("select * from driver_hourly_stats2 limit 3").show()
     sparksql_example()
