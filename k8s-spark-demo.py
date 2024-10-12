@@ -58,9 +58,7 @@ with DAG(
         spark = SparkSession \
                 .builder \
                 .master('local[1]') \
-                .appName("data loading for feast") \
-                .config("spark.executor.instances", "1") \
-                .config("spark.executor.memory", "1g") 
+                .appName("spark-k8s-demo")
                 
         sc = spark.sparkContext
         nums = sc.parallelize([1,2,3,4])
