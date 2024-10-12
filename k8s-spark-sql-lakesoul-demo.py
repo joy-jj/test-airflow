@@ -13,7 +13,7 @@ k8s_exec_config_resource_requirements = {
         # metadata=k8s.V1ObjectMeta(labels={"access-lakesoul": "true"}),
         metadata=k8s.V1ObjectMeta(labels={"access-lakeinsight": "true"}, namespace="lake-public"),
         spec=k8s.V1PodSpec(
-            service_account_name="lake-public",
+            service_account_name="default-editor",
             containers=[
                 k8s.V1Container(
                     name="base",
