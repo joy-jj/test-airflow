@@ -20,8 +20,8 @@ k8s_exec_config_resource_requirements = {
                         k8s.V1VolumeMount(name="ephemeral-volume", mount_path="/home/jovyan")
                     ],
                     resources=k8s.V1ResourceRequirements(
-                        requests={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
-                        limits={"cpu": 0.5, "memory": "200Mi", "ephemeral-storage": "1Gi"},
+                        requests={"cpu": 1, "memory": "1Gi", "ephemeral-storage": "1Gi"},
+                        limits={"cpu": 1, "memory": "1Gi", "ephemeral-storage": "1Gi"},
                     ),
                     
                 )
