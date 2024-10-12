@@ -46,7 +46,7 @@ k8s_exec_config_resource_requirements = {
 
 
 with DAG(
-    dag_id="k8s-spark-sql-demo",
+    dag_id="k8s-spark-sql-read-demo",
     schedule=None,
     start_date=pendulum.datetime(2023, 1, 1, tz="UTC"),
     catchup=False,
