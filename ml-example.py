@@ -18,8 +18,8 @@ k8s_exec_config_resource_requirements = {
                         k8s.V1VolumeMount(name="ephemeral-volume", mount_path="/home/jovyan")
                     ],
                     resources=k8s.V1ResourceRequirements(
-                        requests={"cpu": 2, "memory": "500Mi", "ephemeral-storage": "1Gi"},
-                        limits={"cpu": 2, "memory": "500Mi", "ephemeral-storage": "1Gi"},
+                        requests={"cpu": 1, "memory": "500Mi", "ephemeral-storage": "1Gi"},
+                        limits={"cpu": 1, "memory": "500Mi", "ephemeral-storage": "1Gi"},
                     ),
                     
                 )
@@ -147,4 +147,5 @@ with DAG(
             else:
                 mlflow.sklearn.log_model(lr, "model", signature=model_signature)
         
-    generate_train_data() >> training()
+    generate_train_data()
+    # generate_train_data() >> training()
