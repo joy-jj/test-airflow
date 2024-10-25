@@ -150,5 +150,5 @@ with DAG(
             else:
                 mlflow.sklearn.log_model(lr, "model", signature=model_signature)
         
-    generate_train_data()
-    # generate_train_data() >> training()
+    # generate_train_data()
+    generate_train_data() >> training()
