@@ -8,20 +8,22 @@ from kubernetes.client import models as k8s
 
 k8s_exec_config_resource_requirements = {
     "pod_override": k8s.V1Pod(
+        # metadata=k8s.V1ObjectMeta(labels={"access-lakesoul": "true"}),
+        metadata=k8s.V1ObjectMeta(labels={"access-lakeinsight": "true"}, namespace="lake-public"),
         spec=k8s.V1PodSpec(
+            service_account_name="default-editor",
             containers=[
                 k8s.V1Container(
                     name="base",
-                    image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.5-airflow-v3",
+                    image="swr.ap-southeast-3.myhuaweicloud.com/dmetasoul-repo/jupyter:v1.0.5-airflow-v4",
                     command=["/bin/bash", "/opt/run-airflow.sh"],
                     volume_mounts=[
                         k8s.V1VolumeMount(name="ephemeral-volume", mount_path="/home/jovyan")
                     ],
                     resources=k8s.V1ResourceRequirements(
-                        requests={"cpu": 1, "memory": "500Mi", "ephemeral-storage": "1Gi"},
-                        limits={"cpu": 1, "memory": "500Mi", "ephemeral-storage": "1Gi"},
+                        requests={"cpu": 1, "memory": "1Gi", "ephemeral-storage": "1Gi"},
+                        limits={"cpu": 1, "memory": "1Gi", "ephemeral-storage": "1Gi"},
                     ),
-                    
                 )
             ],
             volumes=[
@@ -38,7 +40,7 @@ k8s_exec_config_resource_requirements = {
                     ),
                 )
             ],
-        )
+        ),
     )
 }
 
