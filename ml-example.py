@@ -64,7 +64,7 @@ with DAG(
     @task(executor_config=k8s_exec_config_resource_requirements)
     def generate_train_data():
         spark = get_spark_session()
-        df = spark.read.csv('s3://obs-lakeinsight-ambank/airflow/winequality-red.csv', header=True, inferSchema=True, sep=';')
+        df = spark.read.csv('s3a://obs-lakeinsight-ambank/airflow/winequality-red.csv', header=True, inferSchema=True, sep=';')
         df.printSchema()
         df.show()
         df.write.format("lakesoul").saveAsTable("winequalit_table2")
