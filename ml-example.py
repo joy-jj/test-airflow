@@ -69,7 +69,8 @@ with DAG(
         df = spark.read.csv('s3a://obs-lakeinsight-ambank/airflow/winequality-red.csv', header=True, inferSchema=True, sep=';')
         df.printSchema()
         df.show()
-        df.write.format("lakesoul").saveAsTable("winequalit_table_airflow")
+        # df.write.format("lakesoul").saveAsTable("winequalit_table_airflow")
+        df.write.format("lakesoul").mode("overwrite").insertInto("winequalit_table_airflow")
         
     @task(executor_config=k8s_exec_config_resource_requirements)
     def training():
