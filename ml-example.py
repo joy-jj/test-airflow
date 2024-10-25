@@ -69,7 +69,6 @@ with DAG(
         df = spark.read.csv('s3a://obs-lakeinsight-ambank/airflow/winequality-red.csv', header=True, inferSchema=True, sep=';')
         df.printSchema()
         df.show()
-        # df.write.format("lakesoul").saveAsTable("winequalit_table_airflow")
         df.write.format("lakesoul").mode("overwrite").insertInto("winequalit_table_airflow")
         
     @task(executor_config=k8s_exec_config_resource_requirements)
@@ -95,7 +94,6 @@ with DAG(
             mae = mean_absolute_error(actual, pred)
             r2 = r2_score(actual, pred)
             return rmse, mae, r2
-        # spark = get_spark_session()
         ds = lakesoul_dataset("winequalit_table_airflow")
         df = ds.to_table().to_pandas()
         
@@ -150,5 +148,4 @@ with DAG(
             else:
                 mlflow.sklearn.log_model(lr, "model", signature=model_signature)
         
-    # generate_train_data()
-    generate_train_data() >> training()
+        generate_train_data() >> training()
