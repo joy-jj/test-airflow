@@ -69,7 +69,7 @@ with DAG(
         df = spark.read.csv('s3a://obs-lakeinsight-ambank/airflow/winequality-red.csv', header=True, inferSchema=True, sep=';')
         df.printSchema()
         df.show()
-        df.write.format("lakesoul").saveAsTable("winequalit_table2")
+        df.write.format("lakesoul").saveAsTable("winequalit_table_airflow")
         
     @task(executor_config=k8s_exec_config_resource_requirements)
     def training():
@@ -95,7 +95,7 @@ with DAG(
             r2 = r2_score(actual, pred)
             return rmse, mae, r2
         # spark = get_spark_session()
-        ds = lakesoul_dataset("winequalit_table2")
+        ds = lakesoul_dataset("winequalit_table_airflow")
         df = ds.to_table().to_pandas()
         
         train, test = train_test_split(df)
